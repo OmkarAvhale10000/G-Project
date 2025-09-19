@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Dark Dimension RPG — Bedroom Map</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header><h1>Dark Dimension RPG</h1></header>
+
+  <main id="game-wrap">
+    <section id="game-area">
+      <div id="viewport">
+        <canvas id="map" width="352" height="288" aria-label="game-map"></canvas>
+
+        <!-- Virtual gamepad overlay (pure CSS) -->
+        <div id="overlay">
+          <div id="dpad">
+            <button class="pad pad-up" data-dir="up">▲</button>
+            <div class="pad-row">
+              <button class="pad pad-left" data-dir="left">◀</button>
+              <button class="pad pad-down" data-dir="down">▼</button>
+              <button class="pad pad-right" data-dir="right">▶</button>
+            </div>
+          </div>
+
+          <div id="ab">
+            <div class="shoulders">
+              <div class="shoulder">L</div>
+              <div class="shoulder">R</div>
+            </div>
+            <div class="ab-row">
+              <button id="btn-b" class="circle">B</button>
+              <button id="btn-a" class="circle">A</button>
+            </div>
+            <div class="ovals"><span></span><span></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="hud">
+        <div id="stats">
+          <div id="hp">HP: —</div>
+          <div id="lvl">Lvl: —</div>
+          <div id="exp">EXP: —</div>
+        </div>
+
+        <div id="message">Use the D-pad (or arrow keys) to move. Interact with the PC (stand in front and press Interact).</div>
+
+        <div id="battle-controls">
+          <button id="attack">Attack</button>
+          <button id="potion">Use Potion</button>
+          <button id="search">Search</button>
+          <button id="flee">Flee</button>
+        </div>
+
+        <div id="save-load">
+          <button id="save">Save</button>
+          <button id="load">Load</button>
+          <button id="reset">Reset</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer><small>Retro look: pixel scale set for crisp GBA-style visuals.</small></footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
