@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Dimension RPG</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="gameContainer">
+        <div class="progress-indicator">
+            <div>Level: <span id="playerLevel">1</span></div>
+            <div>EXP: <span id="playerExp">0</span>/<span id="expToNext">100</span></div>
+            <div class="exp-bar">
+                <div class="exp-fill" id="expFill"></div>
+            </div>
+            <div>HP: <span id="playerHpDisplay">100</span>/100</div>
+            <div>Badges: <span id="badges">0</span>/8</div>
+        </div>
+        <div id="gameScreen">
+            <div id="overworld">
+                <div id="player"></div>
+            </div>
+
+            <div id="battleScreen">
+                <div id="battleArena">
+                    <div id="playerCombatant" class="combatant">
+                        😎
+                        <div class="health-bar">
+                            <div class="health-fill" id="playerHealthFill"></div>
+                        </div>
+                    </div>
+                    <div id="enemyCombatant" class="combatant" >
+                        👹
+                        <div class="health-bar">
+                            <div class="health-fill" id="enemyHealthFill"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="battleUI">
+                    <div id="battleText"></div>
+                    <div id="battleActions">
+                        <button class="action-btn" onclick="playerAttack('punch')">🥊 Punch</button>
+                        <button class="action-btn" onclick="playerAttack('kick')">🦵 Kick</button>
+                        <button class="action-btn" onclick="playerAttack('special')">⚡ Special</button>
+                        <button class="action-btn" onclick="attemptRun()">🏃 Run</button>
+                    </div>
+                </div>
+                <div id="playerStats"></div>
+                <div id="enemyStats"></div>
+            </div>
+
+            <div id="dialogScreen">
+                <div id="dialogBox"></div>
+            </div>
+
+            
+
+            
+        </div>
+        <div id="controls">
+                <strong>Controls:</strong><br>
+                WASD or Arrow Keys - Move<br>
+                Space - Interact<br>
+                Enter - Confirm<br>
+                Esc - Cancel
+            </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
