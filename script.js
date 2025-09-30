@@ -10,30 +10,51 @@
             
             // Define different area types
             areas: {
-                carpet: { x1: 8, y1: 6, x2: 13, y2: 11, encounterRate: 0.03 },
-                // Add more areas here like: entrance: { x1: 9, y1: 13, x2: 11, y2: 14 }
+                // carpet: { x1: 8, y1: 6, x2: 13, y2: 11, encounterRate: 0.03 },
+                road: [
+                    { x1: 0, y1: 0, x2: 4, y2: 0},
+                    { x1: 2, y1: 1, x2: 2, y2: 5},
+                    { x1: 3, y1: 5, x2: 6, y2: 5},
+                    { x1: 6, y1: 1, x2: 6, y2: 4},
+                    { x1: 7, y1: 1, x2: 11, y2: 1},
+                    { x1: 10, y1: 2, x2: 10, y2: 5},
+                    { x1: 5, y1: 5, x2: 9, y2: 5},
+                    { x1: 12, y1: 1, x2: 12, y2: 3},
+                    { x1: 12, y1: 4, x2: 17, y2: 4},
+                    { x1: 13, y1: 5, x2: 13, y2: 6},
+                    { x1: 4, y1: 6, x2: 4, y2: 8},
+                    { x1: 5, y1: 8, x2: 8, y2: 8},
+                    { x1: 6, y1: 9, x2: 6, y2: 13},
+                    { x1: 1, y1: 12, x2: 5, y2: 12},
+                    { x1: 2, y1: 8, x2: 2, y2: 11},
+                    { x1: 7, y1: 13, x2: 12, y2: 13},
+                    { x1: 11, y1: 10, x2: 11, y2: 12},
+                    { x1: 12, y1: 11, x2: 15, y2: 11},
+                    { x1: 14, y1: 8, x2: 14, y2: 10},
+                    { x1: 15, y1: 8, x2: 17, y2: 8},
+                    { x1: 18, y1: 8, x2: 18, y2: 11}
+                ],
+                //tree: { x1: 0, y1: 1, x2: 1, y2: 5 },
+                //Add more areas here like: entrance: { x1: 9, y1: 13, x2: 11, y2: 14 }
             }
         };
+        
+        // ✅ Universal function to check if (x,y) is in an area
+        function isInArea(x, y, area) {
+            // Case 1: single rectangle
+            if (!Array.isArray(area)) {
+                return (
+                    x >= area.x1 && x <= area.x2 &&
+                    y >= area.y1 && y <= area.y2
+                );
+            }
 
-        // Furniture/Objects Configuration - Easy to add new ones!
-        const FURNITURE_CONFIG = [
-            // Top bookshelf
-            { type: 'bookshelf', x: 6, y: 1, width: 10, height: 1 },
-            
-            // Left side machines
-            { type: 'machine', x: 2, y: 7, width: 1, height: 1 },
-            { type: 'machine', x: 2, y: 8, width: 1, height: 1 },
-            
-            // Right side stairs
-            { type: 'stairs', x: 17, y: 4, width: 1, height: 5 },
-            
-            // Center computer
-            { type: 'computer', x: 11, y: 6, width: 1, height: 1 },
-            
-            // Add new furniture here:
-            // { type: 'desk', x: 5, y: 10, width: 2, height: 1 },
-            // { type: 'chair', x: 5, y: 11, width: 1, height: 1 },
-        ];
+            // Case 2: array of rectangles
+            return area.some(rect =>
+                x >= rect.x1 && x <= rect.x2 &&
+                y >= rect.y1 && y <= rect.y2
+            );
+        }
 
         // NPC Configuration - Super easy to add new characters!
         const NPC_CONFIG = [
@@ -46,11 +67,11 @@
                 interaction: 'dialog'
             },
             {
-                name: 'Lab Intruder',
-                type: 'criminal',
-                x: 160, y: 320,
-                sprite: 'criminal',
-                level: 2,
+                name: 'firstDemon',
+                type: 'type1',
+                x: MAP_CONFIG.tileSize*3, y: MAP_CONFIG.tileSize*5,
+                sprite: 'demon',
+                level: 1,
                 interaction: 'battle'
             },
             {
@@ -108,9 +129,15 @@
                 background: '#45b7d1',
                 icon: '👩‍💼'
             },
+            type1: {
+                background: '#ff4757',
+                icon: '👹'
+                
+            },
             criminal: {
                 background: '#ff4757',
                 icon: '👹'
+
             },
             gym_leader: {
                 background: '#ffa726',
@@ -123,42 +150,13 @@
             // Add more sprite types here
         };
 
-        // Furniture Styles Configuration
-        const FURNITURE_STYLES = {
-            bookshelf: {
-                background: 'linear-gradient(180deg, #8B4513 0%, #A0522D 20%, #8B4513 40%, #A0522D 60%, #8B4513 80%, #A0522D 100%)',
-                borderColor: '#654321'
-            },
-            machine: {
-                background: 'linear-gradient(45deg, #C0C0C0 0%, #A8A8A8 50%, #C0C0C0 100%)',
-                borderColor: '#696969'
-            },
-            stairs: {
-                background: 'linear-gradient(135deg, #FF6347 0%, #FF4500 25%, #FF6347 50%, #FF4500 75%, #FF6347 100%)',
-                borderColor: '#B22222'
-            },
-            computer: {
-                background: 'linear-gradient(180deg, #4682B4 0%, #5F9EA0 50%, #4682B4 100%)',
-                borderColor: '#2F4F4F'
-            },
-            desk: {
-                background: 'linear-gradient(180deg, #8B4513 0%, #A0522D 50%, #8B4513 100%)',
-                borderColor: '#654321'
-            },
-            chair: {
-                background: 'linear-gradient(45deg, #654321 0%, #8B4513 50%, #654321 100%)',
-                borderColor: '#4A2C17'
-            }
-            // Add more furniture styles here
-        };
-
         // =====================================
         // GAME STATE - Don't modify unless needed
         // =====================================
         const gameState = {
             player: {
-                x: 400,
-                y: 300,
+                x: 0,
+                y: 0,
                 level: 1,
                 exp: 0,
                 expToNext: 100,
@@ -178,29 +176,58 @@
         // =====================================
         function generateWorld() {
             const overworld = document.getElementById('overworld');
-            
-            // Generate the floor tiles
-            for (let x = 0; x < MAP_CONFIG.width; x++) {
-                for (let y = 0; y < MAP_CONFIG.height; y++) {
-                    const tile = document.createElement('div');
-                    tile.className = 'tile wood-floor';
-                    tile.style.left = x * MAP_CONFIG.tileSize + 'px';
-                    tile.style.top = y * MAP_CONFIG.tileSize + 'px';
-                    
-                    // Check if this tile is in a special area
-                    for (const [areaName, area] of Object.entries(MAP_CONFIG.areas)) {
-                        if (x >= area.x1 && x <= area.x2 && y >= area.y1 && y <= area.y2) {
-                            tile.classList.add(areaName);
-                        }
+
+            // ✅ Function to create one tile
+            function createTile(x, y) {
+                let tile = document.createElement("div");
+                tile.style.left = x * MAP_CONFIG.tileSize + "px";
+                tile.style.top = y * MAP_CONFIG.tileSize + "px";
+
+                // Default background
+                tile.className = "tile carpet";
+
+                // Loop through all areas and assign classes
+                for (const [areaName, area] of Object.entries(MAP_CONFIG.areas)) {
+                    if (isInArea(x, y, area)) {
+                        tile.classList.add(areaName);
                     }
-                    
-                    overworld.appendChild(tile);
+                }
+
+                return tile;
+            }
+
+            // ✅ Build the whole map
+            for (let y = 0; y < MAP_CONFIG.height; y++) {
+                for (let x = 0; x < MAP_CONFIG.width; x++) {
+                    overworld.appendChild(createTile(x, y));
                 }
             }
 
             // Add furniture from configuration
             addFurnitureFromConfig();
         }
+
+        // Furniture/Objects Configuration - Easy to add new ones!
+        const FURNITURE_CONFIG = [
+            // Add new furniture here:
+            //{ type: 'desk', x: 0, y: 1, width: 2, height: 1 },
+            // { type: 'chair', x: 5, y: 11, width: 1, height: 1 },
+        ];
+
+        // Furniture Styles Configuration
+        const FURNITURE_STYLES = {
+            // computer: {
+            //     backgroundImage: url("images/computer.png"),
+            //     backgroundSize: cover,
+            // },
+            
+            // chair: {
+            //     background: 'linear-gradient(45deg, #654321 0%, #8B4513 50%, #654321 100%)',
+            //     borderColor: '#4A2C17'
+            // },
+
+            // Add more furniture styles here
+        };
 
         function addFurnitureFromConfig() {
             const overworld = document.getElementById('overworld');
@@ -222,14 +249,43 @@
                         // Apply styles from configuration
                         if (FURNITURE_STYLES[type]) {
                             const style = FURNITURE_STYLES[type];
+                            // furniture.style.backgroundImage = style.backgroundImage;
+                            // furniture.style.backgroundSize = style.backgroundSize;
                             furniture.style.background = style.background;
                             furniture.style.borderColor = style.borderColor;
                         }
-                        
+
                         overworld.appendChild(furniture);
                     }
                 }
             });
+        }
+
+        // Add new furniture at runtime
+        function addNewFurniture(furnitureConfig) {
+            const { type, x, y, width = 1, height = 1 } = furnitureConfig;
+            const overworld = document.getElementById('overworld');
+            
+            for (let fx = 0; fx < width; fx++) {
+                for (let fy = 0; fy < height; fy++) {
+                    const furniture = document.createElement('div');
+                    furniture.className = `furniture ${type}`;
+                    furniture.style.left = (x + fx) * MAP_CONFIG.tileSize + 'px';
+                    furniture.style.top = (y + fy) * MAP_CONFIG.tileSize + 'px';
+                    furniture.style.width = MAP_CONFIG.tileSize + 'px';
+                    furniture.style.height = MAP_CONFIG.tileSize + 'px';
+                    
+                    if (FURNITURE_STYLES[type]) {
+                        const style = FURNITURE_STYLES[type];
+                        furniture.style.backgroundImage = style.backgroundImage;
+                        furniture.style.backgroundSize = style.backgroundSize;
+                        //furniture.style.background = style.background;
+                        //furniture.style.borderColor = style.borderColor;
+                    }
+                    
+                    overworld.appendChild(furniture);
+                }
+            }
         }
 
         function spawnNPCs() {
@@ -245,6 +301,7 @@
                 if (SPRITE_STYLES[npcConfig.sprite]) {
                     const style = SPRITE_STYLES[npcConfig.sprite];
                     npcElement.style.background = style.background;
+                    npcElement.style.animation = "walk 5s infinite ease-in-out";
                 }
                 
                 document.getElementById('overworld').appendChild(npcElement);
@@ -276,22 +333,26 @@
             const speed = 40;
             let newX = gameState.player.x;
             let newY = gameState.player.y;
-
+            let img = document.getElementById('player');
             switch(e.key.toLowerCase()) {
                 case 'w':
                 case 'arrowup':
+                    player.style.backgroundImage = "url('/images/MainCharImgs/UpChar.png')";
                     newY = Math.max(0, newY - speed);
                     break;
                 case 's':
                 case 'arrowdown':
+                    player.style.backgroundImage = "url('/images/MainCharImgs/DownChar.png')";
                     newY = Math.min(560, newY + speed);
                     break;
                 case 'a':
                 case 'arrowleft':
+                    player.style.backgroundImage = "url('/images/MainCharImgs/LeftChar.png')";
                     newX = Math.max(0, newX - speed);
                     break;
                 case 'd':
                 case 'arrowright':
+                    player.style.backgroundImage = "url('/images/MainCharImgs/RightChar.png')";
                     newX = Math.min(760, newX + speed);
                     break;
                 case ' ':
@@ -316,10 +377,9 @@
             const tileY = Math.floor(gameState.player.y / MAP_CONFIG.tileSize);
             
             // Check each defined area for encounters
-            for (const [areaName, area] of Object.entries(MAP_CONFIG.areas)) {
-                if (tileX >= area.x1 && tileX <= area.x2 && 
-                    tileY >= area.y1 && tileY <= area.y2 && 
-                    area.encounterRate && Math.random() < area.encounterRate) {
+            for (const area of Object.values(MAP_CONFIG.areas)) {
+                // Only check areas with encounterRate
+                if (area.encounterRate && isInArea(tileX, tileY, area) && Math.random() < area.encounterRate) {
                     startWildBattle();
                     break;
                 }
@@ -438,35 +498,14 @@
             gameState.npcs.splice(index, 1);
         }
 
-        // Add new furniture at runtime
-        function addNewFurniture(furnitureConfig) {
-            const { type, x, y, width = 1, height = 1 } = furnitureConfig;
-            const overworld = document.getElementById('overworld');
-            
-            for (let fx = 0; fx < width; fx++) {
-                for (let fy = 0; fy < height; fy++) {
-                    const furniture = document.createElement('div');
-                    furniture.className = `furniture ${type}`;
-                    furniture.style.left = (x + fx) * MAP_CONFIG.tileSize + 'px';
-                    furniture.style.top = (y + fy) * MAP_CONFIG.tileSize + 'px';
-                    furniture.style.width = MAP_CONFIG.tileSize + 'px';
-                    furniture.style.height = MAP_CONFIG.tileSize + 'px';
-                    
-                    if (FURNITURE_STYLES[type]) {
-                        const style = FURNITURE_STYLES[type];
-                        furniture.style.background = style.background;
-                        furniture.style.borderColor = style.borderColor;
-                    }
-                    
-                    overworld.appendChild(furniture);
-                }
-            }
-        }
-
         // =====================================
         // MAIN GAME INITIALIZATION
         // =====================================
         function initGame() {
+            
+            document.querySelector(".game-container").style.display = "none";
+            document.getElementById("gameContainer").style.display = "flex"; 
+                     
             generateWorld();
             spawnNPCs();
             updateUI();
@@ -626,16 +665,25 @@
         function showDialog(message, callback) {
             gameState.inDialog = true;
             document.getElementById('dialogScreen').style.display = 'flex';
-            document.getElementById('dialogBox').innerHTML = `
-                <p>${message}</p>
-                <button class="dialog-btn" onclick="closeDialog(${callback ? 'true' : 'false'})">OK</button>
-            `;
+            const dialogBox = document.getElementById('dialogBox');
+            dialogBox.textContent = ""; // Clear previous content
+
+            // Create and append the message paragraph safely
+            const p = document.createElement('p');
+            p.textContent = message;
+            dialogBox.appendChild(p);
+
+            // Create and append the button
+            const btn = document.createElement('button');
+            btn.className = "dialog-btn";
+            btn.textContent = "OK";
+            btn.onclick = function() { closeDialog(!!callback); };
+            dialogBox.appendChild(btn);
             
             if (callback) {
                 window.currentDialogCallback = callback;
             }
         }
-
         function closeDialog(hasCallback) {
             gameState.inDialog = false;
             document.getElementById('dialogScreen').style.display = 'none';
@@ -658,4 +706,11 @@
         }
 
         // Initialize the game when page loads
-        window.addEventListener('load', initGame);
+
+        function startGame() {
+            initGame();
+        } 
+
+        window.addEventListener('load', () => {
+            document.getElementById("gameContainer").style.display = "none";
+        });
