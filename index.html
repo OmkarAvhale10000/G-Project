@@ -7,6 +7,20 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="game-container">
+    <!-- Start Screen -->
+    <div class="story-panel active start-screen" id="panel0">
+        <div class="game-title">The Journey Begins</div>
+        <div class="dialogue-box">
+            <div class="dialogue-text">Welcome to an epic adventure! Are you ready to begin your story?</div>
+        </div>
+    </div>
+        <div class="controls">
+            <!-- <button class="btn" id="prevBtn" onclick="previousPanel()" disabled>Previous</button> -->
+            <button class="btn" id="nextBtn" onclick="startGame()">Start Game</button>
+        </div>
+    </div>
+
     <div id="gameContainer">
         <div class="progress-indicator">
             <div>Level: <span id="playerLevel">1</span></div>
@@ -42,7 +56,7 @@
                     <div id="battleActions">
                         <button class="action-btn" onclick="playerAttack('punch')">🥊 Punch</button>
                         <button class="action-btn" onclick="playerAttack('kick')">🦵 Kick</button>
-                        <button class="action-btn" onclick="playerAttack('special')">⚡ Special</button>
+                        <button class="action-btn" onclick="playerAttack('special')">⚡Thunder M4 Slice</button>
                         <button class="action-btn" onclick="attemptRun()">🏃 Run</button>
                     </div>
                 </div>
@@ -52,11 +66,7 @@
 
             <div id="dialogScreen">
                 <div id="dialogBox"></div>
-            </div>
-
-            
-
-            
+            </div>            
         </div>
         <div id="controls">
                 <strong>Controls:</strong><br>
