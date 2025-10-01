@@ -3,7 +3,6 @@
     padding: 0;
     box-sizing: border-box;
 }
-
 /* body {
     font-family: 'Courier New', monospace;
     background: #000;
@@ -221,13 +220,13 @@ body {
 
 .computer {           
     background: linear-gradient(180deg, #4682B4 0%, #5F9EA0 50%, #4682B4 100%);
-    border-color: #2F4F4F;
+    border-color: #71cfcf;
     border-radius: 3px;
     /* background-image: url("images/computer.png") !important;
     background-size: cover !important; */
 }
 
-.grass { background: #4a7c59; }
+.grass { background: #2dfa6a; }
 .water { background: #4a7caa; }
 .path { background: #8a7c59; }
 .building { background: #aa4a4a; border: 2px solid #fff; }
@@ -244,6 +243,26 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+#playerScreen{
+    width: 190px;
+    height: 250px;
+    margin-left: 30px;
+    animation: bounce 1s infinite;
+    animation:ease-in-out;
+    transform: scaleX(0.5s);
+    transition: transform 0.5s;
+}
+
+#enemyScreen{
+    width: 190px;
+    height: 250px;
+    margin-left: 30px;
+    animation: bounce 1s infinite;
+    animation:ease-in-out;
+    transform: scaleX(0.5s);
+    transition: transform 0.5s;
 }
 
 /* Animation states for walking */
@@ -272,7 +291,7 @@ body {
 }
 
 .criminal {
-    background: #ff4757;
+    background: #2e1d1f;
 }
 
 .criminal::after {
@@ -291,7 +310,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.9);
+    background: rgba(102, 102, 102, 0.9);
     display: none;
     flex-direction: column;
     justify-content: space-between;
@@ -301,7 +320,7 @@ body {
 
 #battleArena {
     height: 60%;
-    background: linear-gradient(180deg, #87ceeb 0%, #4a7c59 100%);
+    background: url("images/background_battle1.jpg") /*linear-gradient(180deg, #75c0de 0%, #0ee950 100%)*/;
     border: 3px solid #fff;
     border-radius: 10px;
     position: relative;
@@ -314,8 +333,8 @@ body {
 .combatant {
     width: 120px;
     height: 120px;
-    border: 3px solid #fff;
-    border-radius: 50%;
+    border: none;
+    border-radius: none;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -324,11 +343,13 @@ body {
 }
 
 #playerCombatant {
-    background: #ff6b6b;
+    background: none;
+    transform: scaleX(1);
 }
 
 #enemyCombatant {
-    background: #ff4757;
+    background: none;
+    transform: scaleX(-1);
 }
 
 .health-bar {
@@ -338,21 +359,21 @@ body {
     transform: translateX(-50%);
     width: 100px;
     height: 10px;
-    background: #333;
+    background: #d2cccc;
     border: 2px solid #fff;
     border-radius: 5px;
 }
 
 .health-fill {
     height: 100%;
-    background: linear-gradient(90deg, #ff4757 0%, #ffa726 50%, #66bb6a 100%);
+    background: linear-gradient(90deg, #ff4757 0%, #ffa726 50%, #50f858 100%);
     border-radius: 3px;
     transition: width 0.5s ease;
 }
 
 #battleUI {
     height: 35%;
-    background: #1a1a2e;
+    background: #353548;
     border: 3px solid #fff;
     border-radius: 10px;
     padding: 15px;
@@ -362,8 +383,8 @@ body {
 }
 
 #battleText {
-    background: #16213e;
-    border: 2px solid #fff;
+    background: hsl(225, 31%, 87%);
+    border: 2px solid #1c1b1b;
     border-radius: 5px;
     padding: 15px;
     height: 50%;
@@ -374,6 +395,7 @@ body {
 
 #battleActions {
     display: grid;
+    transition: 0.4s;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
     height: 45%;
@@ -404,8 +426,10 @@ body {
 }
 
 #playerStats, #enemyStats {
+    height: 75px;
+    width: 160px;
     position: absolute;
-    background: rgba(0,0,0,0.8);
+    background: rgba(235, 194, 194, 0.84);
     border: 2px solid #fff;
     border-radius: 5px;
     padding: 10px;
@@ -413,20 +437,20 @@ body {
 }
 
 #playerStats {
-    bottom: 20px;
-    left: 20px;
+    bottom: 241px;
+    left: 21px;
 }
 
 #enemyStats {
-    top: 20px;
-    right: 20px;
+    top: 21px;
+    right: 21px;
 }
 
 #controls {
     position: absolute;
     bottom: 40px;
     left: 20px;
-    background: rgba(0,0,0,0.8);
+    background: rgba(156, 156, 156, 0.8);
     border: 2px solid #fff;
     border-radius: 5px;
     padding: 15px;
@@ -466,7 +490,7 @@ body {
     position: absolute;
     top: 20px;
     left: 20px;
-    background: rgba(0,0,0,0.8);
+    background: rgba(189, 188, 188, 0.8);
     border: 2px solid #fff;
     border-radius: 5px;
     padding: 10px;

@@ -34,7 +34,7 @@
                     { x1: 15, y1: 8, x2: 17, y2: 8},
                     { x1: 18, y1: 8, x2: 18, y2: 11}
                 ],
-                //tree: { x1: 0, y1: 1, x2: 1, y2: 5 },
+                tree: { x1: 0, y1: 1, x2: 1, y2: 5 },
                 //Add more areas here like: entrance: { x1: 9, y1: 13, x2: 11, y2: 14 }
             }
         };
@@ -55,7 +55,6 @@
                 y >= rect.y1 && y <= rect.y2
             );
         }
-
         // NPC Configuration - Super easy to add new characters!
         const NPC_CONFIG = [
             {
