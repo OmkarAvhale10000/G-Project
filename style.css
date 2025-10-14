@@ -3,21 +3,6 @@
     padding: 0;
     box-sizing: border-box;
 }
-/* body {
-    font-family: 'Courier New', monospace;
-    background: #000;
-    color: #fff;
-    overflow: hidden;
-}
-
-#gameContainer {
-    width: 100vw;
-    height: 100vh;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-} */
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -27,21 +12,18 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
-    
+    overflow: hidden;   
 }
 
 .game-container {
     width: 90vw;
     max-width: 800px;
     height: 80vh;
-    /* background: #2c3e50; */
     border-radius: 20px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     position: relative;
     overflow: hidden;
-    border: 3px solid #ecf0f1;
-    
+    border: 3px solid #ecf0f1; 
 }
 
 .story-panel {
@@ -57,8 +39,7 @@ body {
     opacity: 0;
     transition: opacity 0.8s ease-in-out;
     padding: 40px;
-    text-align: center;
-    
+    text-align: center; 
 }
 
 .story-panel.active {
@@ -80,8 +61,7 @@ body {
     font-size: 18px;
     color: #2c3e50;
     line-height: 1.6;
-    margin-bottom: 15px;
-    
+    margin-bottom: 15px;  
 }
 
 .start-screen {
@@ -156,32 +136,18 @@ body {
     width: 100%;
     height: 100%;
     position: relative;
-    background: linear-gradient(45deg, #4a7c59 0%, #2a4d3a 50%, #1a3d2a 100%);
+    background: #93dc3a;
 }
 
 .tile {
     width: 40px;
     height: 40px;
     position: absolute;
-    /* border: 1px solid rgba(255,255,255,0.1); */
-}
-
-/* .wood-floor { 
-    background: linear-gradient(45deg, #D2691E 0%, #CD853F 25%, #D2691E 50%, #CD853F 75%, #D2691E 100%);
-    background-size: 8px 8px;
-} */
-
-.carpet { 
-    background: #32CD32; 
-    /* border: 1px solid #228B22; */
-    /* background-image: radial-gradient(circle at 20% 20%, #90EE90 2px, transparent 2px),
-                    radial-gradient(circle at 80% 20%, #90EE90 2px, transparent 2px),
-                    radial-gradient(circle at 20% 80%, #90EE90 2px, transparent 2px),
-                    radial-gradient(circle at 80% 80%, #90EE90 2px, transparent 2px); */
+    z-index: 10;
 }
 
 .road{
-    background-color: #c9c7c7e6; 
+    background-color: #6a6666f6; 
     background-image: 
     /* subtle darker striping to add depth (very faint vertical bands) */
     linear-gradient(90deg, rgba(0,0,0,0.06) 0, rgba(0,0,0,0) 100%),
@@ -192,45 +158,66 @@ body {
 }
 
 .tree { 
-    background-image: url(images/ObjectsofMap/tree.png); 
+    background-image: url(images/ObjectsofMap/Treeset.png); 
+    background-size: 100%;
+}
+.groundMountain{
+    background-image: url(images/ObjectsofMap/ground.png);
+    background-size: 100%;
+}
+.redHouse{
+    background-image: url(images/ObjectsofMap/redHouse.png);
+    background-size: 102%;
+}
+.blueHouse{
+    background-image: url(images/ObjectsofMap/blueHouse.png);
+    background-size: cover;
+}
+.m1{
+    background-image: url(images/ObjectsofMap/m1.png);
+    background-size: cover;
+}
+.m2{
+    background-image: url(images/ObjectsofMap/m2.png);
+    background-size: cover;
+}
+.m3{
+    background-image: url(images/ObjectsofMap/m3.png);
+    background-size: cover;
+}
+.m4{
+    background-image: url(images/ObjectsofMap/m4.png);
+    background-size: cover;
+}
+.m5{
+    background-image: url(images/ObjectsofMap/m5.png);
+    background-size: cover;
+}
+.m6{
+    background-image: url(images/ObjectsofMap/m6.png);
+    background-size: cover;
+}
+.m7{
+    background-image: url(images/ObjectsofMap/m7.png);
+    background-size: cover;
+}
+.m8{
+    background-image: url(images/ObjectsofMap/m8.png);
+    background-size: cover;
+}
+.m9{
+    background-image: url(images/ObjectsofMap/m9.png);
     background-size: cover;
 }
 
 .furniture {
     position: absolute;
-    border: 2px solid #000;
     z-index: 10;
 }
-
-.bookshelf {
-    background: linear-gradient(180deg, #8B4513 0%, #A0522D 20%, #8B4513 40%, #A0522D 60%, #8B4513 80%, #A0522D 100%);
-    border-color: #654321;
-}
-
-.machine {
-    background: linear-gradient(45deg, #C0C0C0 0%, #A8A8A8 50%, #C0C0C0 100%);
-    border-radius: 5px;
-    border-color: #696969;
-}
-
-.stairs {
-    background: linear-gradient(135deg, #FF6347 0%, #FF4500 25%, #FF6347 50%, #FF4500 75%, #FF6347 100%);
-    border-color: #B22222;
-}
-
-.computer {           
-    background: linear-gradient(180deg, #4682B4 0%, #5F9EA0 50%, #4682B4 100%);
-    border-color: #71cfcf;
-    border-radius: 3px;
-    /* background-image: url("images/computer.png") !important;
-    background-size: cover !important; */
-}
-
 .grass { background: #2dfa6a; }
 .water { background: #4a7caa; }
 .path { background: #8a7c59; }
 .building { background: #aa4a4a; border: 2px solid #fff; }
-
 
 #player {
     background-image: url("/images/MainCharImgs/DownChar.png");
@@ -272,8 +259,8 @@ body {
 
 @keyframes walk {
     0%, 100% { transform: translateX(0px); }
-    25% { transform: translateX(-20px); }
-    75% { transform: translateX(20px); }
+    25% { transform: translateX(-40px); }
+    75% { transform: translateX(40px); }
 }
 
 .npc {
