@@ -35,14 +35,42 @@ const MAP_CONFIG = {
             { x1: 18, y1: 8, x2: 18, y2: 11 }
         ],
         tree: [
-            { x1: 0, y1: 1, x2: 0, y2: 14 },
-             { x1: 0, y1: 14, x2: 16, y2: 14 },
-            { x1: 0, y1: 13, x2: 5, y2: 14 },
-            { x1: 0, y1: 1, x2: 1, y2: 11},
-            { x1: 2, y1: 6, x2: 3, y2: 7 },
+            { x1: 0, y1: 1, x2: 0, y2: 14 }
+        ],
+        redHouse: [
+            { x1: 3, y1: 4, x2: 5, y2: 4}
+        ],
+        blueHouse:[ 
+            {x1: 7, y1: 0, x2: 7, y2: 0}
+        ],
+        m1:[
+            {x1: 7, y1: 2,x2: 7, y2: 2}
+        ],
+        m2:[
+            {x1: 8, y1: 2,x2: 8, y2: 2}
+        ],
+        m3:[
+            {x1: 9, y1: 2, x2: 9, y2: 2}
+        ],
+        m4:[
+            {x1: 7, y1: 3, x2: 7, y2: 3}
+        ],
+        m5:[
+            {x1: 8, y1: 3, x2: 8, y2: 3}
+        ],
+        m6:[
+            {x1: 9, y1: 3, x2: 9, y2: 3}
+        ],
+        m7:[
+            {x1: 7, y1: 4, x2: 7, y2: 4}
+        ],
+        m8:[
+            {x1: 8, y1: 4, x2: 8, y2: 4}
+        ],
+        m9:[
+            {x1: 9, y1: 4, x2: 9, y2: 4}
         ],
         //Add more areas here like: entrance: { x1: 9, y1: 13, x2: 11, y2: 14 }
-
     }
 };
 
@@ -62,6 +90,96 @@ function isInArea(x, y, area) {
         y >= rect.y1 && y <= rect.y2
     );
 }
+
+function setupEventListeners() {
+    document.addEventListener('keydown', handleKeyPress);
+    document.addEventListener('keyup', handleKeyUp);
+}
+
+function handleKeyPress(e) {
+    if (gameState.inBattle || gameState.inDialog) return;
+
+    const player = document.getElementById('player');
+    const speed = 40;
+    let newX = gameState.player.x;
+    let newY = gameState.player.y;
+    let img = document.getElementById('player');
+    switch (e.key.toLowerCase()) {
+        case 'w':
+        case 'arrowup':
+            player.style.backgroundImage = "url('/images/MainCharImgs/UpChar.png')";
+            newY = Math.max(0, newY - speed);
+            break;
+        case 's':
+        case 'arrowdown':
+            player.style.backgroundImage = "url('/images/MainCharImgs/DownChar.png')";
+            newY = Math.min(560, newY + speed);
+            break;
+        case 'a':
+        case 'arrowleft':
+            player.style.backgroundImage = "url('/images/MainCharImgs/LeftChar.png')";
+            newX = Math.max(0, newX - speed);
+            break;
+        case 'd':
+        case 'arrowright':
+            player.style.backgroundImage = "url('/images/MainCharImgs/RightChar.png')";
+            newX = Math.min(760, newX + speed);
+            break;
+        case ' ':
+            checkForInteractions();
+            return;
+    }
+
+    console.log(`x:${newX/40}, y:${newY/40}`);
+
+    if (isAreaBlocked(newX/MAP_CONFIG.tileSize,newY/MAP_CONFIG.tileSize)){
+        console.log(`x:${newX/40}, y:${newY/40} is blocked.....`);
+        return;
+    }
+
+    gameState.player.x = newX;
+    gameState.player.y = newY;
+    player.style.left = newX + 'px';
+    player.style.top = newY + 'px';
+
+    // Add walking animation
+    player.classList.add('walking');
+    setTimeout(() => {
+        player.classList.remove('walking');
+    }, 200);
+
+    // Check for random encounters based on area configuration
+    const tileX = Math.floor(gameState.player.x / MAP_CONFIG.tileSize);
+    const tileY = Math.floor(gameState.player.y / MAP_CONFIG.tileSize);
+
+    // Check each defined area for encounters
+    for (const area of Object.values(MAP_CONFIG.areas)) {
+        // Only check areas with encounterRate
+        if (area.encounterRate && isInArea(tileX, tileY, area) && Math.random() < area.encounterRate) {
+            startWildBattle();
+            break;
+        }
+    }
+}
+
+function isAreaBlocked(x, y) {
+    // Define which areas block movement
+    let blockingAreas = ['tree','blueHouse','redHouse','m1','m3','m4','m5','m6','m7','m8','m9']; // add 'water', 'rock', etc. later
+
+    for (const areaName of blockingAreas) {
+        const areaOfObject = MAP_CONFIG.areas[areaName];
+        // const areaOfFurniture = FURNITURE_CONFIG.type[areaName];
+        if (isInArea(x, y, areaOfObject)) {
+        return true;
+        }
+    }
+    return false;
+}
+
+function handleKeyUp(e) {
+    // Handle key releases if needed
+}
+
 // NPC Configuration - Super easy to add new characters!
 const NPC_CONFIG = [
     {
@@ -176,11 +294,24 @@ const gameState = {
     battleLog: []
 };
 
+// for(let obj in MAP_CONFIG.areas.road){
+//     if(MAP_CONFIG.areas.road[obj].x1==MAP_CONFIG.areas.road[obj].x2){
+//         console.log("Vertical road");
+//     } else console.log("Horizontal road");
+// }
+
 // =====================================
 // MAP GENERATION FUNCTIONS
 // =====================================
 function generateWorld() {
     const overworld = document.getElementById('overworld');
+
+    // ✅ Build the whole map
+    for (let y = 0; y < MAP_CONFIG.height; y++) {
+        for (let x = 0; x < MAP_CONFIG.width; x++) {
+            overworld.appendChild(createTile(x, y));
+        }
+    }
 
     // ✅ Function to create one tile
     function createTile(x, y) {
@@ -189,7 +320,7 @@ function generateWorld() {
         tile.style.top = y * MAP_CONFIG.tileSize + "px";
 
         // Default background
-        tile.className = "tile carpet";
+        tile.className = "tile";
 
         // Loop through all areas and assign classes
         for (const [areaName, area] of Object.entries(MAP_CONFIG.areas)) {
@@ -201,12 +332,6 @@ function generateWorld() {
         return tile;
     }
 
-    // ✅ Build the whole map
-    for (let y = 0; y < MAP_CONFIG.height; y++) {
-        for (let x = 0; x < MAP_CONFIG.width; x++) {
-            overworld.appendChild(createTile(x, y));
-        }
-    }
     // Add furniture from configuration
     addFurnitureFromConfig();
 }
@@ -214,8 +339,7 @@ function generateWorld() {
 // Furniture/Objects Configuration - Easy to add new ones!
 const FURNITURE_CONFIG = [
     // Add new furniture here:
-    //{ type: 'desk', x: 0, y: 1, width: 2, height: 1 },
-    // { type: 'chair', x: 5, y: 11, width: 1, height: 1 },
+    //{ type: 'chair', x: 5, y: 11, width: 1, height: 1 },
 ];
 
 // Furniture Styles Configuration
@@ -251,13 +375,13 @@ function addFurnitureFromConfig() {
                 furniture.dataset.furnitureId = index;
 
                 // Apply styles from configuration
-                if (FURNITURE_STYLES[type]) {
-                    const style = FURNITURE_STYLES[type];
-                    // furniture.style.backgroundImage = style.backgroundImage;
-                    // furniture.style.backgroundSize = style.backgroundSize;
-                    furniture.style.background = style.background;
-                    furniture.style.borderColor = style.borderColor;
-                }
+                // if (FURNITURE_STYLES[type]) {
+                //     const style = FURNITURE_STYLES[type];
+                //     // furniture.style.backgroundImage = style.backgroundImage;
+                //     // furniture.style.backgroundSize = style.backgroundSize;
+                //     furniture.style.background = style.background;
+                //     furniture.style.borderColor = style.borderColor;
+                // }
 
                 overworld.appendChild(furniture);
             }
@@ -323,75 +447,6 @@ function updateNPCSprites() {
             npcElement.style.setProperty('--icon', `"${SPRITE_STYLES[npc.sprite].icon}"`);
         }
     });
-}
-
-function setupEventListeners() {
-    document.addEventListener('keydown', handleKeyPress);
-    document.addEventListener('keyup', handleKeyUp);
-}
-
-function handleKeyPress(e) {
-    if (gameState.inBattle || gameState.inDialog) return;
-
-    const player = document.getElementById('player');
-    const speed = 40;
-    let newX = gameState.player.x;
-    let newY = gameState.player.y;
-    let img = document.getElementById('player');
-    switch (e.key.toLowerCase()) {
-        case 'w':
-        case 'arrowup':
-            player.style.backgroundImage = "url('/images/MainCharImgs/UpChar.png')";
-            newY = Math.max(0, newY - speed);
-            break;
-        case 's':
-        case 'arrowdown':
-            player.style.backgroundImage = "url('/images/MainCharImgs/DownChar.png')";
-            newY = Math.min(560, newY + speed);
-            break;
-        case 'a':
-        case 'arrowleft':
-            player.style.backgroundImage = "url('/images/MainCharImgs/LeftChar.png')";
-            newX = Math.max(0, newX - speed);
-            break;
-        case 'd':
-        case 'arrowright':
-            player.style.backgroundImage = "url('/images/MainCharImgs/RightChar.png')";
-            newX = Math.min(760, newX + speed);
-            break;
-        case ' ':
-            checkForInteractions();
-            return;
-    }
-
-    // Update player position
-    gameState.player.x = newX;
-    gameState.player.y = newY;
-    player.style.left = newX + 'px';
-    player.style.top = newY + 'px';
-
-    // Add walking animation
-    player.classList.add('walking');
-    setTimeout(() => {
-        player.classList.remove('walking');
-    }, 200);
-
-    // Check for random encounters based on area configuration
-    const tileX = Math.floor(gameState.player.x / MAP_CONFIG.tileSize);
-    const tileY = Math.floor(gameState.player.y / MAP_CONFIG.tileSize);
-
-    // Check each defined area for encounters
-    for (const area of Object.values(MAP_CONFIG.areas)) {
-        // Only check areas with encounterRate
-        if (area.encounterRate && isInArea(tileX, tileY, area) && Math.random() < area.encounterRate) {
-            startWildBattle();
-            break;
-        }
-    }
-}
-
-function handleKeyUp(e) {
-    // Handle key releases if needed
 }
 
 function startBattle(enemy) {
@@ -554,7 +609,7 @@ function playerAttack(attackType) {
     if (gameState.currentEnemy.hp <= 0) {
         setTimeout(() => enemyDefeated(), 1000);
     } else {
-        setTimeout(() => enemyAttack(), 1500);
+        setTimeout(() => enemyAttack(), 1300);
     }
 }
 
